@@ -204,47 +204,6 @@ export default function SubscriptionPage() {
 </div>
 </div>
 </section>
-        {/*  Footer  */}
-        <footer className="mt-16 border-t border-outline-variant/10 pt-10 pb-10">
-<div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-<div className="col-span-1">
-<span className="text-xl font-bold tracking-tighter text-primary font-headline mb-4 block">TalentCurator</span>
-<p className="text-on-surface-variant text-xs leading-relaxed">
-                        The editorial marketplace for the world's most talented professionals and the brands that value quality.
-                    </p>
-</div>
-<div>
-<h4 className="font-bold mb-6 text-xs uppercase tracking-widest text-on-surface">Platform</h4>
-<ul className="space-y-4 text-on-surface-variant text-xs">
-<li><a className="hover:text-primary transition-colors" href="#">Dashboard</a></li>
-<li><a className="hover:text-primary transition-colors" href="#">Jobs</a></li>
-<li><a className="hover:text-primary transition-colors" href="#">Map</a></li>
-</ul>
-</div>
-<div>
-<h4 className="font-bold mb-6 text-xs uppercase tracking-widest text-on-surface">Company</h4>
-<ul className="space-y-4 text-on-surface-variant text-xs">
-<li><a className="hover:text-primary transition-colors" href="#">About</a></li>
-<li><a className="hover:text-primary transition-colors" href="#">Privacy</a></li>
-<li><a className="hover:text-primary transition-colors" href="#">Terms</a></li>
-</ul>
-</div>
-<div>
-<h4 className="font-bold mb-6 text-xs uppercase tracking-widest text-on-surface">Support</h4>
-<ul className="space-y-4 text-on-surface-variant text-xs">
-<li><a className="hover:text-primary transition-colors" href="#">Help Center</a></li>
-<li><a className="hover:text-primary transition-colors" href="#">Contact</a></li>
-</ul>
-</div>
-</div>
-<div className="mt-20 pt-8 border-t border-outline-variant/10 flex justify-between items-center">
-<p className="text-outline text-[10px] font-bold uppercase tracking-widest">© 2024 TalentCurator Inc.</p>
-<div className="flex gap-4">
-<a className="text-outline hover:text-primary transition-colors" href="#"><span className="material-symbols-outlined text-base">language</span></a>
-<a className="text-outline hover:text-primary transition-colors" href="#"><span className="material-symbols-outlined text-base">public</span></a>
-</div>
-</div>
-</footer>
 </main>
       </div>
     </DashboardLayout>
