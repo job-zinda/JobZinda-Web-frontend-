@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TalentCurator - Subscription Plans</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#ffffff",
+                        "inverse-surface": "#0f0d12",
+                        "background": "#fef7fe",
+                        "tertiary-fixed": "#fec7ea",
+                        "surface-container-highest": "#e7e0ec",
+                        "on-tertiary-fixed-variant": "#704764",
+                        "on-primary": "#fdf7ff",
+                        "on-tertiary": "#fff7f9",
+                        "outline-variant": "#b6b0bb",
+                        "primary-fixed-dim": "#7636ea",
+                        "on-primary-container": "#ffffff",
+                        "on-tertiary-fixed": "#512b47",
+                        "primary": "#7230e6",
+                        "on-error": "#fff7f7",
+                        "on-surface": "#34313a",
+                        "on-background": "#34313a",
+                        "on-primary-fixed-variant": "#e8daff",
+                        "surface-bright": "#fef7fe",
+                        "secondary": "#635c71",
+                        "inverse-primary": "#a277ff",
+                        "on-secondary-fixed-variant": "#5f586d",
+                        "tertiary": "#7c526f",
+                        "error-dim": "#6b0221",
+                        "inverse-on-surface": "#a09ba1",
+                        "tertiary-dim": "#6f4663",
+                        "error": "#a8364b",
+                        "primary-fixed": "#8347f8",
+                        "secondary-fixed": "#e9def8",
+                        "tertiary-fixed-dim": "#efbadc",
+                        "on-surface-variant": "#625d67",
+                        "surface-container-low": "#f8f1fa",
+                        "surface-container-high": "#ede6f0",
+                        "on-secondary-container": "#554e63",
+                        "on-secondary": "#fdf7ff",
+                        "surface-tint": "#7230e6",
+                        "surface-variant": "#e7e0ec",
+                        "secondary-fixed-dim": "#dad0e9",
+                        "error-container": "#f97386",
+                        "surface-dim": "#ded7e4",
+                        "on-tertiary-container": "#663e5a",
+                        "on-secondary-fixed": "#433c50",
+                        "secondary-container": "#e9def8",
+                        "tertiary-container": "#fec7ea",
+                        "on-error-container": "#6e0523",
+                        "primary-dim": "#651cda",
+                        "outline": "#7e7983",
+                        "surface": "#fef7fe",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-dim": "#575065",
+                        "primary-container": "#8347f8",
+                        "surface-container": "#f2ecf5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body">
+<!-- SideNavBar Component -->
+<aside class="h-screen w-64 sticky left-0 top-0 bg-[#F8F1FA] dark:bg-slate-900 flex flex-col py-8 border-r border-outline-variant/10 z-[60]">
+<div class="px-8 mb-10">
+<div class="flex items-center gap-3 mb-1">
+<span class="text-xl font-black text-[#7230E6] tracking-tighter font-headline">TalentCurate</span>
+</div>
+<p class="text-[10px] uppercase tracking-widest font-bold text-outline">Premium Curation</p>
+</div>
+<nav class="flex-grow flex flex-col">
+<a class="flex items-center gap-4 text-slate-500 dark:text-slate-400 pl-8 py-3 font-manrope font-semibold tracking-tight text-sm hover:text-[#7230E6] dark:hover:text-[#8347F8] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+            Dashboard
+        </a>
+<a class="flex items-center gap-4 text-slate-500 dark:text-slate-400 pl-8 py-3 font-manrope font-semibold tracking-tight text-sm hover:text-[#7230E6] dark:hover:text-[#8347F8] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">work</span>
+            Jobs
+        </a>
+<a class="flex items-center gap-4 text-slate-500 dark:text-slate-400 pl-8 py-3 font-manrope font-semibold tracking-tight text-sm hover:text-[#7230E6] dark:hover:text-[#8347F8] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">rss_feed</span>
+            Home Feed
+        </a>
+<a class="flex items-center gap-4 text-slate-500 dark:text-slate-400 pl-8 py-3 font-manrope font-semibold tracking-tight text-sm hover:text-[#7230E6] dark:hover:text-[#8347F8] transition-all duration-300" href="#">
+<span class="material-symbols-outlined">person_pin_circle</span>
+            Nearby Freelancers
+        </a>
+<a class="flex items-center gap-4 text-[#7230E6] dark:text-[#8347F8] font-bold bg-[#FFFFFF] dark:bg-slate-800 rounded-l-full ml-4 pl-4 py-3 font-manrope tracking-tight text-sm transition-all duration-300 scale-105" href="#">
+<span class="material-symbols-outlined">loyalty</span>
+            Subscription
+        </a>
+</nav>
+</aside>
+<!-- Main Shell -->
+<div class="flex-grow flex flex-col overflow-hidden">
+<!-- TopAppBar Component -->
+<header class="sticky top-0 z-50 flex justify-between items-center h-20 px-12 w-full bg-[#FEF7FE]/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-[0_8px_24px_-4px_rgba(114,48,230,0.08)]">
+<div class="flex items-center gap-4 w-1/3">
+<div class="flex items-center bg-surface-container-low px-4 py-2.5 rounded-full border border-outline-variant/20 focus-within:ring-2 ring-primary/20 transition-all w-full max-w-sm">
+<span class="material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm ml-2 w-full font-label" placeholder="Search talent..." type="text"/>
+</div>
+</div>
+<div class="flex items-center justify-center">
+<span class="text-lg font-bold text-[#7230E6] font-headline">TalentCurate</span>
+</div>
+<div class="flex items-center justify-end gap-6 w-1/3">
+<div class="flex items-center gap-2">
+<button class="p-2.5 text-slate-600 dark:text-slate-300 hover:bg-[#F8F1FA] dark:hover:bg-slate-800 rounded-full transition-all duration-200 ease-out">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2.5 text-slate-600 dark:text-slate-300 hover:bg-[#F8F1FA] dark:hover:bg-slate-800 rounded-full transition-all duration-200 ease-out">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<button class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 ring-2 ring-transparent hover:ring-primary/40 transition-all">
+<img alt="User profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq1UhzIlb2nVfmOD3sBri99hgFXWVZjrYnv2bNNtkeNn2Eg0Khfhx4PPRSB7cg9th5DViBjdOZdf-sO4KbfMFxc8f0CwC89bct6JjHXuKlr2va3GAtkqsV3zM8oHE8z0chpQCUj6X6fC6vVhf8GlIJKYUZThJRND7VTuYzNZjj-6GwC52Glo1ym-PcsEsYz8-wbZZjQ1jNZGOxiLO0SacVAH3Kc3DPWqoJSYDC7esXzmx0AdKBBkqaN7uC16qCil4mYxTaNdAa624"/>
+</button>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-8 py-12 lg:py-16">
+<!-- Hero Section -->
+<section class="text-center mb-16 max-w-2xl mx-auto">
+<h1 class="font-headline text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface mb-6">
+                Elevate Your Career Path
+            </h1>
+<p class="text-on-surface-variant text-base lg:text-lg leading-relaxed mb-10">
+                Unlock premium editorial features, advanced analytics, and priority placement in the global marketplace.
+            </p>
+<!-- Toggle -->
+<div class="flex items-center justify-center gap-4">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Monthly</span>
+<button class="w-12 h-6 bg-surface-container-high rounded-full p-1 flex items-center transition-all duration-300">
+<div class="w-4 h-4 bg-primary rounded-full shadow-sm translate-x-6"></div>
+</button>
+<span class="text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                    Yearly
+                    <span class="bg-primary/10 text-primary text-[9px] px-2 py-0.5 rounded-full font-bold">Save 20%</span>
+</span>
+</div>
+</section>
+<!-- Pricing Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+<!-- Free Plan -->
+<div class="bg-surface-container-low border border-outline-variant/10 rounded-2xl p-8 flex flex-col transition-all hover:shadow-xl hover:shadow-primary/5">
+<div class="mb-8">
+<h3 class="font-headline text-lg font-bold mb-1">Free</h3>
+<p class="text-on-surface-variant text-xs">Essentials for starting out.</p>
+</div>
+<div class="mb-8 flex items-baseline gap-1">
+<span class="text-4xl font-extrabold text-on-surface">$0</span>
+<span class="text-outline text-sm">/mo</span>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                        Basic Profile Portfolio
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                        Apply to 5 Jobs / Mo
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                        Standard Job Alerts
+                    </li>
+</ul>
+<button class="w-full py-3 px-6 rounded-xl bg-surface-container-highest text-on-surface-variant font-bold text-sm transition-all cursor-default">
+                    Current Plan
+                </button>
+</div>
+<!-- Pro Plan (Active/Highlighted) -->
+<div class="relative bg-surface-container-lowest rounded-2xl p-8 flex flex-col shadow-[0_20px_40px_-12px_rgba(114,48,230,0.12)] border-2 border-primary scale-105 z-10">
+<div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary text-white text-[9px] px-3 py-1 rounded-full font-bold uppercase tracking-widest shadow-md">
+                    Most Popular
+                </div>
+<div class="mb-8">
+<h3 class="font-headline text-lg font-bold mb-1">Pro</h3>
+<p class="text-on-surface-variant text-xs">Professional tools for growth.</p>
+</div>
+<div class="mb-8 flex items-baseline gap-1">
+<span class="text-4xl font-extrabold text-on-surface">$24</span>
+<span class="text-outline text-sm">/mo</span>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Curated Profile Badging
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Unlimited Job Applications
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Advanced Skill Analytics
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Priority Messenger Access
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        No Platform Transaction Fees
+                    </li>
+</ul>
+<button class="w-full py-3.5 px-6 rounded-xl bg-primary text-white font-bold text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all transform active:scale-95">
+                    Upgrade to Pro
+                </button>
+</div>
+<!-- Enterprise Plan -->
+<div class="bg-surface-container-low border border-outline-variant/10 rounded-2xl p-8 flex flex-col transition-all hover:shadow-xl hover:shadow-primary/5">
+<div class="mb-8">
+<h3 class="font-headline text-lg font-bold mb-1">Enterprise</h3>
+<p class="text-on-surface-variant text-xs">For teams and agencies.</p>
+</div>
+<div class="mb-8 flex items-baseline gap-1">
+<span class="text-4xl font-extrabold text-on-surface">$89</span>
+<span class="text-outline text-sm">/mo</span>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                        Custom Branding Kits
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                        Dedicated Success Manager
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                        Team Collaboration Tools
+                    </li>
+<li class="flex items-center gap-3 text-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                        API Integration Access
+                    </li>
+</ul>
+<button class="w-full py-3 px-6 rounded-xl bg-surface-container-highest text-primary font-bold text-sm hover:bg-primary/10 transition-all">
+                    Contact Sales
+                </button>
+</div>
+</div>
+<!-- Deep Dive Features -->
+<section class="mt-32">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div class="max-w-xl">
+<h2 class="font-headline text-3xl font-bold text-on-surface mb-4">Deep Dive Features</h2>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                        Beyond the basics, TalentCurator offers a suite of editorial-grade tools designed to transform how you present and manage your professional identity.
+                    </p>
+</div>
+<a class="text-primary font-bold text-sm flex items-center gap-2 group" href="#">
+                    View Full Feature Comparison
+                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-12 gap-6">
+<!-- Analytics Card -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low border border-outline-variant/10 rounded-3xl p-10 flex flex-col md:flex-row gap-10 items-center overflow-hidden group">
+<div class="flex-1">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">insights</span>
+</div>
+<h3 class="text-xl font-headline font-bold mb-4">Advanced Analytics</h3>
+<p class="text-on-surface-variant text-sm mb-6">Track profile views, application success rates, and skill demand in your specific niche with precision data.</p>
+<ul class="space-y-3">
+<li class="flex items-center gap-2 text-xs font-bold text-on-surface">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                                Competitor Benchmarking
+                            </li>
+<li class="flex items-center gap-2 text-xs font-bold text-on-surface">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                                Weekly Performance Reports
+                            </li>
+</ul>
+</div>
+<div class="flex-1 w-full relative">
+<img alt="Dashboard Analytics UI" class="rounded-xl shadow-2xl group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnEnQTDhw1LoCuC4-ZmH_D0m7D_tuF-ndXTLtasx7oAlf9wUYoZnJ68VXwT_j4MSNyYiWn8ExoLt3cyxNO8a-ulvTh3t-WWWFwqzMPMHMDwv0qR4y1FLYKis6Lpgk4Wow6XxsW9BKFGIz7faKiut2sJSUUQTN9m2-IVEwPBc2Yxgm367nrPLM7p2azVQA-kRBNk1NRTW3BNW2ThLIeUKoDTL8IUpDRUVZRLK5vagjQSa2D4aVTZTzEdqMtsZ5EHzKTfAQgHhsAOE8"/>
+</div>
+</div>
+<!-- Messaging Card -->
+<div class="col-span-12 lg:col-span-4 bg-tertiary-container/20 border border-tertiary/10 rounded-3xl p-10 flex flex-col">
+<div class="w-10 h-10 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<h3 class="text-xl font-headline font-bold mb-4 text-on-tertiary-container">Smart Messaging</h3>
+<p class="text-on-tertiary-container/80 text-sm mb-8">AI-powered outreach and priority inbox to ensure you never miss an opportunity.</p>
+<div class="mt-auto space-y-4">
+<div class="bg-surface/80 p-3 rounded-xl flex items-center gap-3 shadow-sm">
+<div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden">
+<img alt="Contact" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr7sF2EX-HZPeNzTSKwaAfxTHkbKFm-k8hSmQZtMadsiPQfI3McJWqIwy7yc48nRFR-CIiyhWmKQBkBq7BgBwWGTv_Oc4D-vwdAp6UdOpuvhnfw0WMzcUSUtqUosFQTubyI-JWFAmLroVEN1YIerOvlEJANhFOVyhpcx_DuAsDitHBA4TSOlyWQ_-FPTC-ha_cmmTPmtaCsmDi9aQY0mFxencyGWxmFH5v4VBuz6saPzKiVX7rH_aXuzMTQFkg75MJi9kA2fQ8HBM"/>
+</div>
+<div class="flex-1 h-1.5 bg-outline-variant/30 rounded-full"></div>
+</div>
+<div class="bg-primary/10 p-3 rounded-xl flex items-center gap-3 self-end w-4/5 ml-auto">
+<div class="flex-1 h-1.5 bg-primary/20 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Portfolio Card -->
+<div class="col-span-12 lg:col-span-5 bg-surface-container-high border border-outline-variant/10 rounded-3xl p-10 flex flex-col">
+<div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<h3 class="text-xl font-headline font-bold mb-4">Editorial Showcase</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Transform your static CV into a dynamic, editorial-style digital portfolio that tells your unique story.</p>
+</div>
+<!-- Security Card -->
+<div class="col-span-12 lg:col-span-7 bg-on-surface text-surface rounded-3xl p-10 flex items-center justify-between overflow-hidden relative">
+<div class="max-w-xs relative z-10">
+<h3 class="text-xl font-headline font-bold mb-4">Enterprise Grade Security</h3>
+<p class="text-surface/70 text-sm">Rest easy with end-to-end encryption for all documents and private conversations.</p>
+</div>
+<div class="absolute right-[-20px] top-[-20px] opacity-10">
+<span class="material-symbols-outlined text-[140px] rotate-12" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="mt-32 border-t border-outline-variant/10 pt-20 pb-10">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1">
+<span class="text-xl font-bold tracking-tighter text-primary font-headline mb-4 block">TalentCurator</span>
+<p class="text-on-surface-variant text-xs leading-relaxed">
+                        The editorial marketplace for the world's most talented professionals and the brands that value quality.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold mb-6 text-xs uppercase tracking-widest text-on-surface">Platform</h4>
+<ul class="space-y-4 text-on-surface-variant text-xs">
+<li><a class="hover:text-primary transition-colors" href="#">Dashboard</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Jobs</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Map</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6 text-xs uppercase tracking-widest text-on-surface">Company</h4>
+<ul class="space-y-4 text-on-surface-variant text-xs">
+<li><a class="hover:text-primary transition-colors" href="#">About</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-6 text-xs uppercase tracking-widest text-on-surface">Support</h4>
+<ul class="space-y-4 text-on-surface-variant text-xs">
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+</div>
+<div class="mt-20 pt-8 border-t border-outline-variant/10 flex justify-between items-center">
+<p class="text-outline text-[10px] font-bold uppercase tracking-widest">© 2024 TalentCurator Inc.</p>
+<div class="flex gap-4">
+<a class="text-outline hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-base">language</span></a>
+<a class="text-outline hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-base">public</span></a>
+</div>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Profile - The Curator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#e7e0ec",
+                    "inverse-surface": "#0f0d12",
+                    "on-secondary-fixed-variant": "#5f586d",
+                    "tertiary": "#7c526f",
+                    "on-primary": "#fdf7ff",
+                    "surface-container-high": "#ede6f0",
+                    "error": "#a8364b",
+                    "surface-tint": "#7230e6",
+                    "tertiary-fixed-dim": "#efbadc",
+                    "on-tertiary-container": "#663e5a",
+                    "secondary": "#635c71",
+                    "on-tertiary": "#fff7f9",
+                    "outline": "#7e7983",
+                    "on-primary-container": "#ffffff",
+                    "surface-variant": "#e7e0ec",
+                    "on-primary-fixed": "#ffffff",
+                    "primary-dim": "#651cda",
+                    "inverse-primary": "#a277ff",
+                    "surface": "#fef7fe",
+                    "surface-container": "#f2ecf5",
+                    "primary": "#7230e6",
+                    "error-dim": "#6b0221",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#f97386",
+                    "on-surface": "#34313a",
+                    "on-tertiary-fixed-variant": "#704764",
+                    "secondary-fixed-dim": "#dad0e9",
+                    "primary-container": "#8347f8",
+                    "on-primary-fixed-variant": "#e8daff",
+                    "surface-dim": "#ded7e4",
+                    "tertiary-dim": "#6f4663",
+                    "secondary-dim": "#575065",
+                    "on-tertiary-fixed": "#512b47",
+                    "on-error-container": "#6e0523",
+                    "on-secondary-container": "#554e63",
+                    "tertiary-container": "#fec7ea",
+                    "on-secondary-fixed": "#433c50",
+                    "surface-container-low": "#f8f1fa",
+                    "on-surface-variant": "#625d67",
+                    "background": "#fef7fe",
+                    "outline-variant": "#b6b0bb",
+                    "on-error": "#fff7f7",
+                    "tertiary-fixed": "#fec7ea",
+                    "on-background": "#34313a",
+                    "on-secondary": "#fdf7ff",
+                    "inverse-on-surface": "#a09ba1",
+                    "secondary-fixed": "#e9def8",
+                    "primary-fixed-dim": "#7636ea",
+                    "primary-fixed": "#8347f8",
+                    "secondary-container": "#e9def8",
+                    "surface-bright": "#fef7fe"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-glass {
+            background: rgba(254, 247, 254, 0.8);
+            backdrop-filter: blur(24px);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-[#FEF7FE]/80 backdrop-blur-3xl flex justify-between items-center px-8 h-20 w-full shadow-[0_8px_24px_-4px_rgba(114,48,230,0.08)]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black text-[#7230E6] font-headline tracking-tight">The Curator</span>
+<div class="hidden md:flex items-center gap-6 font-headline tracking-tight">
+<a class="text-[#34313A] hover:bg-[#F8F1FA] transition-colors px-3 py-1 rounded-md" href="#">Home</a>
+<a class="text-[#34313A] hover:bg-[#F8F1FA] transition-colors px-3 py-1 rounded-md" href="#">Explore</a>
+<a class="text-[#7230E6] font-bold border-b-2 border-[#7230E6] px-3 py-1" href="#">Profile</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low rounded-full border-none focus:ring-2 focus:ring-primary w-64" placeholder="Search experiences..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-[#F8F1FA] rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-[#F8F1FA] rounded-full transition-colors">settings</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User profile avatar" data-alt="Close up portrait of a young man with a friendly expression and stylish hair in soft daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnRfjmssNHHGazgjptowwJ3p31wYj5DkW08L5VQf8u9AllbdZLqov-4IeVYXHEPUiloHNhIN-hFumJhfAnkMB_2UI7hBMDs0F6sSEuUYpr8Mdd-9Gce_GYZwZrYQcYN8Q39ZmURyM6vmrlQkWiFpI-cqcJzUB7gIcJ4xiNkIGlA-Sy86_Xk1Vf6m7UmB5GEeIRJvCVnfLxZIpilVbg5N4OncipPgp1--bb7naAe-YLOEhlHje5IJwQopn-LouvI9FVmChd5__csAQ"/>
+</div>
+<button class="text-[#7230E6] font-bold hover:underline ml-2">Sign Out</button>
+</div>
+</nav>
+<!-- SideNavBar (Shared Component) -->
+<aside class="hidden md:flex flex-col py-8 gap-4 h-screen w-72 fixed left-0 top-0 z-40 bg-[#F8F1FA] pt-24 font-['Inter'] font-medium">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold">CP</div>
+<div>
+<h2 class="text-xl font-bold text-[#34313A] font-headline">Curator Pro</h2>
+<p class="text-xs text-[#49454F]">Enterprise Suite</p>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-1">
+<a class="flex items-center gap-4 px-6 py-3 text-[#49454F] hover:text-[#7230E6] hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#49454F] hover:text-[#7230E6] hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">work</span>
+<span>Jobs</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#49454F] hover:text-[#7230E6] hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Applications</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#49454F] hover:text-[#7230E6] hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 bg-white text-[#7230E6] rounded-r-full shadow-[0_4px_12px_rgba(114,48,230,0.05)] border-l-4 border-primary" href="#">
+<span class="material-symbols-outlined" data-weight="fill">settings</span>
+<span class="font-bold">Settings</span>
+</a>
+</div>
+<div class="px-6 mt-auto">
+<a class="flex items-center gap-4 py-3 text-[#49454F] hover:text-[#7230E6] transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help Center</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:pl-72 pt-24 min-h-screen">
+<div class="max-w-6xl mx-auto px-8 pb-20">
+<!-- Header Section -->
+<header class="relative mb-12">
+<div class="h-48 w-full rounded-2xl overflow-hidden mb-[-4rem]">
+<img class="w-full h-full object-cover" data-alt="Soft ethereal gradient background with shades of purple, lavender and deep indigo with subtle grainy texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANfweNZqodljEP0ifKJhEas6MKRYSzL-Etjozx87FyGyhaMEeX_ZeUqEoZrbGL_TYK8j5mdQG3cSti7ukVD5x4fdnfFo2KVXW5eLoK9JZa8kUP-EOsQmGm4AUsNJ7VpF7AAUdiJi3yVQGWKBd-dcNPw49QDOwpySo2o2z9cnj2GjBbig7gq_Y3t1zPMaWAZbcQ5GiT68THgshFirOqB25m9Lh0Sd3DRVrLLyXLfmaVRWbwEoKo1KX96xjfSSc4N-YKZaN4yUBOeds"/>
+</div>
+<div class="px-8 flex flex-col md:flex-row items-end gap-6 relative z-10">
+<div class="relative group">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-3xl border-4 border-white overflow-hidden shadow-xl">
+<img class="w-full h-full object-cover" data-alt="Portrait of a creative professional man with glasses and a thoughtful expression against a soft-lit studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOV9faQtW_5Z00PbvFw3OvOo5wN4ghFtw6iS4wuEoLEHMw2Mmnf5tdctsT1rp50VKW_h98Vd9wNgFfxhT5kmsCSusUY7VmRvfl_AqZ1vA2Ddv6Ta-1SkPdt6ouq0mTyEJREakqIbn4d-BtZMr8kn0MFP-YxUm8U7LXsBB2dAzsfmE2aiT_bYPZWXVFeJe2Qn9b9n-FC6n0TJkKGt0HQa70MuZlGOygzb8Q5blBgMFQSayBXOxlUYXtZWMbdHiFiGl3Tq3sVwonMGA"/>
+</div>
+<button class="absolute bottom-2 right-2 p-2 bg-primary text-white rounded-xl shadow-lg material-symbols-outlined">edit</button>
+</div>
+<div class="flex-1 pb-4">
+<h1 class="text-4xl font-extrabold font-headline tracking-tight text-on-surface mb-1">Julian Thorne</h1>
+<p class="text-on-surface-variant font-medium text-lg">Senior Experience Curator</p>
+</div>
+<div class="pb-4 hidden md:block">
+<div class="bg-surface-container-highest px-6 py-4 rounded-2xl">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-semibold text-on-surface-variant">Profile Completion</span>
+<span class="text-sm font-bold text-primary">85%</span>
+</div>
+<div class="w-48 h-2 bg-white rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Navigation Tabs -->
+<div class="flex overflow-x-auto gap-1 border-none mb-8 scrollbar-hide">
+<button class="whitespace-nowrap px-6 py-3 bg-surface-container-lowest text-primary font-bold rounded-t-xl shadow-[0_-4px_12px_rgba(114,48,230,0.04)] border-b-4 border-primary">Account Info</button>
+<button class="whitespace-nowrap px-6 py-3 text-on-surface-variant font-medium hover:bg-surface-container-low rounded-t-xl transition-colors">Experience</button>
+<button class="whitespace-nowrap px-6 py-3 text-on-surface-variant font-medium hover:bg-surface-container-low rounded-t-xl transition-colors">Security</button>
+<button class="whitespace-nowrap px-6 py-3 text-on-surface-variant font-medium hover:bg-surface-container-low rounded-t-xl transition-colors">Subscriptions</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Main Form Canvas -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-3xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.02)]">
+<div class="mb-10">
+<h2 class="text-2xl font-bold font-headline mb-2">Personal Details</h2>
+<p class="text-on-surface-variant">Manage your basic information and public presence.</p>
+</div>
+<form class="space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant ml-1">First Name</label>
+<input class="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-4 py-3 rounded-t-lg transition-all" type="text" value="Julian"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant ml-1">Last Name</label>
+<input class="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-4 py-3 rounded-t-lg transition-all" type="text" value="Thorne"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant ml-1">Email Address</label>
+<input class="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-4 py-3 rounded-t-lg transition-all" type="email" value="julian.thorne@thecurator.com"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant ml-1">Bio</label>
+<textarea class="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-4 py-3 rounded-t-lg transition-all resize-none" rows="4">Digital experience curator with over 12 years of industry insight. Passionate about creating seamless user journeys and aesthetic digital narratives.</textarea>
+</div>
+<div class="flex items-center justify-end gap-4 pt-4">
+<button class="px-8 py-3 text-primary font-bold hover:bg-primary/5 rounded-full transition-colors" type="button">Discard Changes</button>
+<button class="px-10 py-3 bg-gradient-to-br from-primary to-primary-container text-white font-bold rounded-full shadow-lg hover:scale-[1.02] active:scale-95 transition-all" type="submit">Save Changes</button>
+</div>
+</form>
+</div>
+<!-- Sidebar Contextual Info -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Verification Status Card -->
+<div class="bg-surface-container-low rounded-3xl p-6 border border-white/50">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-weight="fill">verified_user</span>
+<h3 class="font-bold text-lg">Verification</h3>
+</div>
+<p class="text-sm text-on-surface-variant mb-6">Your identity has been verified. You have full access to enterprise tools.</p>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span class="text-sm font-bold">Identity Verified</span>
+</div>
+</div>
+<!-- Connection Stats Card -->
+<div class="bg-surface-container-highest rounded-3xl p-6">
+<h3 class="font-bold text-lg mb-6">Connection Summary</h3>
+<div class="space-y-6">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">Active Subscriptions</span>
+<span class="font-bold">4</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">Profile Views (30d)</span>
+<span class="font-bold">1,248</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">Network Reach</span>
+<span class="font-bold">Expert</span>
+</div>
+</div>
+</div>
+<!-- Logout Button Area -->
+<div class="pt-4 px-2">
+<button class="w-full flex items-center justify-center gap-2 py-4 text-error font-bold border-2 border-error/10 hover:bg-error/5 rounded-2xl transition-all">
+<span class="material-symbols-outlined">logout</span>
+                            Logout from Dashboard
+                        </button>
+<p class="text-center text-xs text-on-surface-variant mt-4">Last logged in: Oct 12, 2023 - 14:32 GMT</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-glass border-t border-white/20 px-6 py-4 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px] font-bold">Explore</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-weight="fill">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</button>
+</nav>
+</body></html>

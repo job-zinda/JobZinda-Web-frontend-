@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Find Nearby Freelancers | Job Zinda</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#ded7e4",
+                    "tertiary-dim": "#6f4663",
+                    "outline-variant": "#b6b0bb",
+                    "on-error": "#fff7f7",
+                    "error-dim": "#6b0221",
+                    "surface-variant": "#e7e0ec",
+                    "secondary-fixed-dim": "#dad0e9",
+                    "surface-bright": "#fef7fe",
+                    "primary-dim": "#651cda",
+                    "error": "#a8364b",
+                    "surface-container": "#f2ecf5",
+                    "surface-tint": "#7230e6",
+                    "surface": "#fef7fe",
+                    "on-primary-container": "#ffffff",
+                    "primary-container": "#8347f8",
+                    "primary-fixed-dim": "#7636ea",
+                    "on-tertiary-fixed": "#512b47",
+                    "tertiary-fixed-dim": "#efbadc",
+                    "inverse-primary": "#a277ff",
+                    "on-surface": "#34313a",
+                    "on-tertiary-container": "#663e5a",
+                    "on-surface-variant": "#625d67",
+                    "inverse-on-surface": "#a09ba1",
+                    "on-tertiary-fixed-variant": "#704764",
+                    "tertiary-container": "#fec7ea",
+                    "on-tertiary": "#fff7f9",
+                    "on-secondary-fixed-variant": "#5f586d",
+                    "outline": "#7e7983",
+                    "error-container": "#f97386",
+                    "secondary": "#635c71",
+                    "secondary-dim": "#575065",
+                    "on-secondary-fixed": "#433c50",
+                    "primary-fixed": "#8347f8",
+                    "on-secondary": "#fdf7ff",
+                    "primary": "#7230e6",
+                    "background": "#fef7fe",
+                    "on-error-container": "#6e0523",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#ffffff",
+                    "surface-container-high": "#ede6f0",
+                    "secondary-fixed": "#e9def8",
+                    "on-background": "#34313a",
+                    "surface-container-low": "#f8f1fa",
+                    "surface-container-highest": "#e7e0ec",
+                    "secondary-container": "#e9def8",
+                    "inverse-surface": "#0f0d12",
+                    "tertiary-fixed": "#fec7ea",
+                    "on-primary-fixed-variant": "#e8daff",
+                    "on-secondary-container": "#554e63",
+                    "on-primary": "#fdf7ff",
+                    "tertiary": "#7c526f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .map-gradient {
+            background: linear-gradient(180deg, rgba(254, 247, 254, 0) 0%, rgba(254, 247, 254, 0.9) 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e7e0ec;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface overflow-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-[#FEF7FE]/80 dark:bg-[#1C1B1F]/80 backdrop-blur-3xl shadow-[0_8px_24px_-4px_rgba(114,48,230,0.08)] flex justify-between items-center px-8 h-20 w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black text-[#7230E6] dark:text-[#D0BCFF] font-['Manrope'] tracking-tight">The Curator</span>
+<div class="hidden md:flex items-center gap-6">
+<nav class="flex gap-6 items-center">
+<a class="text-[#34313A] dark:text-[#E6E1E5] hover:bg-[#F8F1FA] dark:hover:bg-[#2B2930] transition-colors px-3 py-1 rounded-md" href="#">Dashboard</a>
+<a class="text-[#34313A] dark:text-[#E6E1E5] hover:bg-[#F8F1FA] dark:hover:bg-[#2B2930] transition-colors px-3 py-1 rounded-md" href="#">Jobs</a>
+<a class="text-[#7230E6] dark:text-[#D0BCFF] font-bold border-b-2 border-[#7230E6] px-3 py-1" href="#">Nearby Freelancers</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer p-2 hover:bg-surface-container-low rounded-full transition-colors">notifications</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer p-2 hover:bg-surface-container-low rounded-full transition-colors">settings</span>
+<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User profile avatar" data-alt="professional user headshot of a creative director with a clean studio background and soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGmx18fX4TxrzNC7E4o83TGUaAqkFz2hrc7ajyubNzvmuUjGgT2xcgIlTXgNcyJq33Un9JbgQ1Xi52F6tVLXIEG2vSugr1khpc6_nNZg6O8rj6BAZ7WAd0EFRsl6fdZJYiMw71DLqMltU_jzLBnNFX7Muv--Ls98t2_vmw0TO2bnjuTSqA9GTPuvknMHQDZxnt7mi5VTI-q1La-FXux-CTlN_2Qgc7A80P7-zRdygII1-y_2vnhT1IOcK2ezW4pn8J1c3_UOjlblE"/>
+</div>
+<button class="text-[#7230E6] font-semibold text-sm hover:underline ml-2">Sign Out</button>
+</div>
+</header>
+<!-- SideNavBar (Hidden on map view for wider canvas but shown if needed via structure) -->
+<aside class="hidden lg:flex flex-col py-8 gap-4 h-screen w-72 fixed left-0 top-0 z-40 bg-[#F8F1FA] dark:bg-[#1C1B1F] pt-28">
+<div class="px-6 mb-6">
+<h2 class="text-xl font-bold text-[#34313A] font-headline">Curator Pro</h2>
+<p class="text-xs text-on-surface-variant">Enterprise Suite</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 text-[#49454F] hover:text-[#7230E6] hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#49454F] hover:text-[#7230E6] hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined">work</span>
+<span class="font-medium">Jobs</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 bg-white text-[#7230E6] rounded-r-full shadow-[0_4px_12px_rgba(114,48,230,0.05)]" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-medium">Nearby Freelancers</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#49454F] hover:text-[#7230E6] hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined">stars</span>
+<span class="font-medium">Subscription</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<a class="flex items-center gap-3 py-3 text-[#49454F] hover:text-[#7230E6] transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-medium">Help Center</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-72 pt-20 h-screen relative flex flex-col md:flex-row overflow-hidden">
+<!-- Search & Filter Header (Floating atop map) -->
+<div class="absolute top-6 left-1/2 -translate-x-1/2 z-30 w-full max-w-4xl px-4">
+<div class="bg-surface/80 backdrop-blur-2xl rounded-2xl shadow-xl p-4 flex flex-col md:flex-row items-center gap-4 border border-outline-variant/10">
+<div class="flex-1 w-full relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-on-surface-variant/60" placeholder="Search freelancers by name or role..." type="text"/>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto">
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-3 rounded-xl cursor-pointer hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary text-sm">distance</span>
+<span class="text-sm font-medium whitespace-nowrap">15 km</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-3 rounded-xl cursor-pointer hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-primary text-sm">tune</span>
+<span class="text-sm font-medium">Filters</span>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+                        Update Map
+                    </button>
+</div>
+</div>
+</div>
+<!-- Map Area -->
+<div class="flex-1 h-full relative overflow-hidden bg-surface-container-low">
+<!-- Simulated Map Image -->
+<img class="w-full h-full object-cover opacity-60" data-alt="stylized vector city map of Austin Texas with soft pastel colors, purple highlights for landmarks and clean roads" data-location="Austin, Texas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIpooLy7iBhg6hrPJHBwEw7_YMZP_Xxm6TUxjOao4LnOpNAplPRHiXLXvX1Z2GykkA7MJoDcazDqmGl4cl1SNGbMpBtQmLkMuH6LkHTeqdcrtgpOgnwtxCqtQaX_HD8qJHcJWUHWM-dLEvMonCb2PMcoKn9E8wPaWt6Sma498aYB6zvsHDpbuBMyW5RVumapwm1qI2SQPVMg0qnptTB29pXbFCfUSsvgzPc8_ecteppx-juKXtOwuiGBbaEagX7b-07DPgAzFG_ss"/>
+<!-- Map Overlay UI (Pins) -->
+<div class="absolute inset-0 pointer-events-none">
+<!-- Pin 1 -->
+<div class="absolute top-[35%] left-[42%] pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center">
+<div class="bg-white p-1 rounded-full shadow-lg border-2 border-primary group-hover:scale-110 transition-transform">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="portrait of a male graphic designer smiling wearing a minimal grey shirt on a soft beige background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUxBrto0RZXnOul0mrbXXmdlCJHvIsr1dOPs3CX9rb-KiNrnZVjjRHUuTL250xMdoNPgbPVdCny3iy1CRhwWZTqIjCvUMbQjpx_wkneQmdTjQoVRR5QxL4XMNwehFxVWuxkKmwyCTgopR7lH1LnvUR44oKdyhiUaex7dkwUPeB-rbFc5-I-rXb7NzMlkAXRydlqn-wMtmBNWNDQpIMTll4URExPjGsRpoD5cYLJA7YFCOa2jAIBCCsqXJfXbnV3Jf91M1qqWmKhzE"/>
+</div>
+<div class="mt-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md">
+                            UX DESIGN
+                        </div>
+</div>
+</div>
+<!-- Pin 2 -->
+<div class="absolute top-[60%] left-[25%] pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center">
+<div class="bg-white p-1 rounded-full shadow-lg border-2 border-primary-container group-hover:scale-110 transition-transform">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="professional photo of a female software engineer in a modern office with natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJxUNhYg8_K201Pf0HGcZk8XxoH946Vhcr5RYOyKY5TvUOT1tjK9DyM7ZC1_OnyBAWhDEHGxLY8_PkXSEIuM38zgdCbwC0SSnHYaoehYD1JoFcdvyE6AOfkfIh5pOjzp2v53FYy-rTRdfRPifWMP2riL6N3zJKAV3surbsUB2lluvSn2Q-g2nRV6p7r_lF5WsdYSBuDblH8rI5TuacFSEvRRVvnbRgZGZsGwo5--VPZrmTwwUdiSZcbKuHyRrBBBYleIifalv4B08"/>
+</div>
+<div class="mt-2 bg-primary-container text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md">
+                            REACT DEV
+                        </div>
+</div>
+</div>
+<!-- Pin 3 -->
+<div class="absolute top-[48%] left-[68%] pointer-events-auto cursor-pointer group">
+<div class="relative flex flex-col items-center">
+<div class="bg-white p-1 rounded-full shadow-lg border-2 border-tertiary group-hover:scale-110 transition-transform">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="close-up of a content strategist in creative studio workspace with blurred warm lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9ixTmDmaR9p6CAf06NsYtR8O0w27X45c_WTk0CIwLPjQctBEGSFZtkSqvDcMXMrkGb1w5yv7qHfhAv3CFr3eIUL_TXxx0O-nb6MxE1pNUdEQmXHCk3Bl5YeTG4yVwiSNpeNmgzx0293ZtY3Oz5Z9RoimvA8TTck1L8jRwdj5mdZ4Ppua0UGjgc5wKX-GTvaQQ4LNiw-jdhmPGuuYWSEK4Rg9KvyM544fHHma0hvVhPA5BuTWgD3gBaG5xpim3Ptg11ZlVgek5JvU"/>
+</div>
+<div class="mt-2 bg-tertiary text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md">
+                            CONTENT
+                        </div>
+</div>
+</div>
+</div>
+<!-- Map Controls -->
+<div class="absolute bottom-10 right-10 flex flex-col gap-2 z-20">
+<button class="w-12 h-12 bg-white rounded-xl shadow-lg flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-12 h-12 bg-white rounded-xl shadow-lg flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="w-12 h-12 bg-white rounded-xl shadow-lg flex items-center justify-center text-primary mt-4 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">my_location</span>
+</button>
+</div>
+</div>
+<!-- Side Panel: Freelancer Cards -->
+<div class="w-full md:w-96 lg:w-[420px] h-1/2 md:h-full bg-white border-l border-outline-variant/10 shadow-2xl z-40 flex flex-col">
+<div class="p-6 border-b border-outline-variant/10">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-xl font-bold font-headline text-on-surface">Freelancers Nearby</h3>
+<span class="text-sm font-medium text-primary">24 found</span>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary text-white px-4 py-1.5 rounded-full text-xs font-semibold">Highest Rated</button>
+<button class="bg-surface-container-low text-on-surface-variant px-4 py-1.5 rounded-full text-xs font-semibold hover:bg-surface-container transition-colors">Available Now</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+<!-- Card 1 -->
+<div class="group p-5 rounded-2xl bg-surface-container-lowest hover:bg-surface-bright border border-transparent hover:border-primary-container/20 transition-all cursor-pointer shadow-[0_4px_12px_rgba(114,48,230,0.03)] hover:shadow-[0_8px_24px_-4px_rgba(114,48,230,0.08)]">
+<div class="flex items-start gap-4 mb-4">
+<img class="w-16 h-16 rounded-xl object-cover" data-alt="square portrait of a male graphic designer smiling wearing a minimal grey shirt on a soft beige background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb7YlCCwsa8M9MDcAVcL_r2Uzqo227iGHJyASYg6pbxL-nYcCKeY_Ls9F2Q0fthYUvWAnS1hTlqUqA1Wq6jUoZEsm8ej47slZwWgDsd0W7iVgzwqmuQFTPsWer3F1qku0V3Sh-RPeAZxXStfFdTk0oydmG8PYZviOKgdkrnpKZBROYm7fnKcLJZp23qD4uTypNFbBSk7fVhZ-8pIsaFtv0ix33bJXuw06I0k6MEqmFIiBGaiLpEa2H2GEgi8as7ECi68Xt6FvEHtM"/>
+<div class="flex-1">
+<h4 class="font-bold text-lg text-on-surface">Alex Rivera</h4>
+<p class="text-sm text-on-surface-variant">Senior Product Designer</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.9</span>
+<span class="text-[10px] text-on-surface-variant">(120+ reviews)</span>
+</div>
+</div>
+<span class="text-primary font-bold text-lg">$85<span class="text-xs font-normal text-on-surface-variant">/hr</span></span>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-surface-container-low px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase text-on-surface-variant">Figma</span>
+<span class="bg-surface-container-low px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase text-on-surface-variant">UI/UX</span>
+<span class="bg-surface-container-low px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase text-on-surface-variant">Prototyping</span>
+</div>
+<button class="w-full py-3 rounded-xl bg-surface-container-highest text-primary font-bold text-sm hover:bg-primary-container hover:text-white transition-all">
+                        View Profile
+                    </button>
+</div>
+<!-- Card 2 -->
+<div class="group p-5 rounded-2xl bg-surface-container-lowest hover:bg-surface-bright border border-transparent hover:border-primary-container/20 transition-all cursor-pointer shadow-[0_4px_12px_rgba(114,48,230,0.03)] hover:shadow-[0_8px_24px_-4px_rgba(114,48,230,0.08)]">
+<div class="flex items-start gap-4 mb-4">
+<img class="w-16 h-16 rounded-xl object-cover" data-alt="professional square photo of a female software engineer in a modern office with natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh9far_KRQoQAZdCIinebJDfzD1FfJnUMlCN9vX7W6B2kWExIUQHG-47q6AIpxuO3Bt-bhKMbcGVe3w8u_d5LtkbRUVp_5u8WGEVznNUIbkw0_-xreUOVQzsTGZpj-0xMYvePOiBBrOsmUPvE-x80W47Eo8Bh5X11iWFlymDhBlfQhtM8m-DF36bI_LbOdvNfBzNREFSYrbaQDEi2yKXNx63K8KKQszOdncMf47pUczsLV2V6mptEEi-GuvqYf5uZrLo0Q6Z8I1xM"/>
+<div class="flex-1">
+<h4 class="font-bold text-lg text-on-surface">Elena Vance</h4>
+<p class="text-sm text-on-surface-variant">Full Stack Developer</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">5.0</span>
+<span class="text-[10px] text-on-surface-variant">(45 reviews)</span>
+</div>
+</div>
+<span class="text-primary font-bold text-lg">$110<span class="text-xs font-normal text-on-surface-variant">/hr</span></span>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-surface-container-low px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase text-on-surface-variant">React</span>
+<span class="bg-surface-container-low px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase text-on-surface-variant">Node.js</span>
+<span class="bg-surface-container-low px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase text-on-surface-variant">TypeScript</span>
+</div>
+<button class="w-full py-3 rounded-xl bg-surface-container-highest text-primary font-bold text-sm hover:bg-primary-container hover:text-white transition-all">
+                        View Profile
+                    </button>
+</div>
+<!-- Card 3 -->
+<div class="group p-5 rounded-2xl bg-surface-container-lowest hover:bg-surface-bright border border-transparent hover:border-primary-container/20 transition-all cursor-pointer shadow-[0_4px_12px_rgba(114,48,230,0.03)] hover:shadow-[0_8px_24px_-4px_rgba(114,48,230,0.08)]">
+<div class="flex items-start gap-4 mb-4">
+<img class="w-16 h-16 rounded-xl object-cover" data-alt="portrait of a creative content strategist in modern workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQDUIp90Ezp66HsFmw03weh0S9tmpP6Im7cVsZi9xNHmEE8PyIviEZY0FyGbVsF46QJ4V18RyDc4AjMkh05rPk2Iyao-0QHjqbxveOv0WyWUXFYqoGKBU61aQIhO4J9huMyo9dA4mZcL1eMQcvpuz_G6xAhf0JI-U9pAMy9f0vUUD-Ip9elFVZWzeu7OeQc1vblAbW_BjHoOLaFoL-0JACllw6o72XD0IYRp-QB0EY7rb8LsSh7zq9UwwJVc95q5E8hh2DlvwO7cQ"/>
+<div class="flex-1">
+<h4 class="font-bold text-lg text-on-surface">Julian Black</h4>
+<p class="text-sm text-on-surface-variant">Content Strategist</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.8</span>
+<span class="text-[10px] text-on-surface-variant">(89 reviews)</span>
+</div>
+</div>
+<span class="text-primary font-bold text-lg">$65<span class="text-xs font-normal text-on-surface-variant">/hr</span></span>
+</div>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="bg-surface-container-low px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase text-on-surface-variant">Copywriting</span>
+<span class="bg-surface-container-low px-3 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase text-on-surface-variant">SEO</span>
+</div>
+<button class="w-full py-3 rounded-xl bg-surface-container-highest text-primary font-bold text-sm hover:bg-primary-container hover:text-white transition-all">
+                        View Profile
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Hidden on detail-heavy maps sometimes, but useful for 'Post a Job' in this app ecosystem) -->
+<button class="fixed bottom-8 left-1/2 -translate-x-1/2 md:left-[calc(50%-180px)] lg:left-auto lg:right-96 lg:translate-x-0 bg-gradient-to-br from-primary to-primary-container text-white px-8 py-4 rounded-full font-bold shadow-2xl flex items-center gap-3 z-50 hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+<span>Post a New Job</span>
+</button>
+</body></html>
