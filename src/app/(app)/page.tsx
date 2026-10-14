@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth-context";
 import { contentApi, postApi, userApi, type FeedKind } from "@/lib/api/endpoints";
@@ -32,9 +32,20 @@ export default function HomePage() {
   const categories = useQuery({ queryKey: ["categories"], queryFn: contentApi.categories, staleTime: 600_000 });
   const categoryName = categories.data?.find((c) => c._id === category)?.name;
 
+  // For you + "All": the backend narrows suggestions to the viewer's own
+  // profession, which is often empty. Fall back to every public post then.
+  const allSource = useRef<FeedKind>("suggested");
   const feed = usePaged(
     ["posts", "feed", kind, category],
-    (pageNumber) => postApi.feed(kind, { pageNumber, category: categoryName }),
+    async (pageNumber) => {
+      if (kind !== "suggested" || categoryName) return postApi.feed(kind, { pageNumber, category: categoryName });
+      if (pageNumber === 1) {
+        const first = await postApi.feed("suggested", { pageNumber });
+        allSource.current = first.items.length ? "suggested" : "public";
+        if (first.items.length) return first;
+      }
+      return postApi.feed(allSource.current, { pageNumber });
+    },
     { enabled: !isLoading },
   );
   const sentinel = useInView<HTMLDivElement>(
@@ -42,10 +53,7 @@ export default function HomePage() {
     !!feed.hasNextPage,
   );
 
-  // The backend ignores `category`, so also filter on the author's profession.
-  const posts = categoryName
-    ? feed.items.filter((p) => typeof p.user === "object" && p.user.professionName === categoryName)
-    : feed.items;
+  const posts = feed.items;
   const top = (banners.data ?? []).filter((b) => !b.position || b.position === "top");
   const inline = (banners.data ?? []).filter((b) => b.position && b.position !== "top");
 
