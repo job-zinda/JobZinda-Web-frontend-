@@ -86,6 +86,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const counts = useUnreadCounts();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [confirmLogout, setConfirmLogout] = useState(false);
+  // Full-height pages (map, chat) manage their own scrolling.
+  const fullBleed = pathname === "/map" || isActive(pathname, "/chat");
 
   useEffect(() => {
     // Close the mobile drawer on navigation.
@@ -255,9 +257,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <main className="flex-1 pb-24 md:pb-10">{children}</main>
+        <main className={cn("flex-1", !fullBleed && "pb-24 md:pb-10")}>{children}</main>
 
         {/* Community WhatsApp button (as in the Flutter home screen) */}
+        {!fullBleed && (
         <a
           href={SUPPORT.whatsappGroup}
           target="_blank"
@@ -269,6 +272,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.6-.91-2.2-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.47 1.07 2.88 1.21 3.08.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.32l-.34-.2-3.56.93.95-3.47-.22-.36a9.43 9.43 0 0 1-1.45-5.02c0-5.2 4.24-9.44 9.45-9.44a9.4 9.4 0 0 1 6.68 2.77 9.38 9.38 0 0 1 2.76 6.68c0 5.21-4.24 9.44-9.46 9.44m8.04-17.48A11.3 11.3 0 0 0 12.05.7C5.78.7.68 5.8.68 12.06c0 2 .52 3.96 1.52 5.68L.58 23.7l6.1-1.6a11.33 11.33 0 0 0 5.37 1.37h.01c6.26 0 11.36-5.1 11.36-11.36 0-3.03-1.18-5.89-3.33-8.03" />
           </svg>
         </a>
+        )}
 
         {/* Mobile bottom navigation */}
         <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t border-primary/5 bg-white/90 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 backdrop-blur-xl md:hidden">

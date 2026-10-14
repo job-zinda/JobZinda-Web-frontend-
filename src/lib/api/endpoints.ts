@@ -199,7 +199,8 @@ export const storyApi = {
   create: (media: { mediaType: "image" | "video"; content: string; duration?: number }, description = "") =>
     api("story/createStory", {
       method: "POST",
-      body: { notificationType: "other", media: [{ duration: 0, ...media }], description, caption: "" },
+      // Backend (story-service.create) expects a single media object, not an array.
+      body: { notificationType: "other", media: { duration: 0, ...media }, description, caption: "" },
     }),
   markViewed: (storyId: string, lastViewedMediaId: string) =>
     api("story/updateStoryView", { method: "POST", body: { storyId, lastViewedMediaId } }),
