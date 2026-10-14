@@ -1,14 +1,11 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 
 /** Opens a hidden file input and resolves with the chosen file (or null). */
 export function useFilePicker() {
-  const resolver = useRef<((f: File | null) => void) | null>(null);
-
   return useCallback((accept: string) => {
     return new Promise<File | null>((resolve) => {
-      resolver.current = resolve;
       const input = document.createElement("input");
       input.type = "file";
       input.accept = accept;

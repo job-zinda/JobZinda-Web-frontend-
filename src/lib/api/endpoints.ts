@@ -308,8 +308,21 @@ export const subscriptionApi = {
       body: { orderId, paymentId },
       headers: { "x-razorpay-signature": signature },
     }),
-  mine: () => api<{ subscription: Data | null }>("subscription/getMySubscription").then((d) => d.subscription),
+  mine: () => api<{ subscription: MySubscription | null }>("subscription/getMySubscription").then((d) => d.subscription),
+  freeTrial: () => api("subscription/free-trial", { method: "POST" }),
 };
+
+export interface MySubscription {
+  _id: string;
+  planId?: string | Plan;
+  plan?: Plan;
+  planName?: string;
+  status?: string;
+  startDate?: string;
+  endDate?: string;
+  expiryDate?: string;
+  [key: string]: unknown;
+}
 
 export const walletApi = {
   // These endpoints answer with raw JSON (no {status,data} envelope).
@@ -319,8 +332,28 @@ export const walletApi = {
     ),
   requestWithdrawal: (userId: string, amount: number, upiId: string) =>
     apiRaw<{ message?: string }>("wallet/requestWithdrawal", { method: "POST", body: { userId, amount, upiId } }),
-  withdrawals: () => apiRaw<Data>("wallet/myWithdrawals", { query: { pageNumber: 1, pageSize: 50 } }),
+  withdrawals: () =>
+    apiRaw<{ withdrawals: Withdrawal[]; summary?: WithdrawalSummary }>("wallet/myWithdrawals", {
+      query: { pageNumber: 1, pageSize: 50 },
+    }),
 };
+
+export interface Withdrawal {
+  _id: string;
+  amount: number;
+  status: "pending" | "paid" | string;
+  upiId?: string;
+  createdAt?: string;
+}
+
+export interface WithdrawalSummary {
+  totalWithdrawals?: number;
+  totalAmount?: number;
+  totalWithdrawnAmount?: number;
+  currentWalletBalance?: number;
+  pendingAmount?: number;
+  paidAmount?: number;
+}
 
 export const referralApi = {
   mine: (params: PageParams) =>
@@ -329,15 +362,28 @@ export const referralApi = {
     ),
 };
 
+export interface CoursePurchase {
+  _id: string;
+  amount?: number;
+  orderId?: string;
+  paymentId?: string;
+  paymentStatus?: "pending" | "success" | "failed" | string;
+  createdAt?: string;
+}
+
+// course-purchase answers with raw JSON (no envelope).
 export const courseApi = {
-  mine: () => apiRaw<Data>("course-purchase/my"),
-  createOrder: (referralCode?: string) =>
-    apiRaw<RazorpayOrder & { data?: RazorpayOrder }>("course-purchase/createOrder", {
+  mine: () => apiRaw<{ purchase: CoursePurchase | null }>("course-purchase/my").then((r) => r.purchase),
+  createOrder: (userId: string, referralCode?: string) =>
+    apiRaw<{ order: RazorpayOrder; purchaseId: string }>("course-purchase/createOrder", {
       method: "POST",
-      body: { referralCode: referralCode || undefined },
-    }).then((r) => (r?.data ?? r) as RazorpayOrder),
-  verify: (orderId: string, paymentId: string, razorpay_signature: string) =>
-    apiRaw<Data>("course-purchase/verifyPayment", { method: "POST", body: { orderId, paymentId, razorpay_signature } }),
+      body: { userId, referralCode: referralCode || undefined },
+    }).then((r) => r.order),
+  verify: (userId: string, orderId: string, paymentId: string, razorpay_signature: string) =>
+    apiRaw<{ success: boolean; purchase: CoursePurchase }>("course-purchase/verifyPayment", {
+      method: "POST",
+      body: { userId, orderId, paymentId, razorpay_signature },
+    }),
 };
 
 /* ------------------------------ extras ------------------------------ */
