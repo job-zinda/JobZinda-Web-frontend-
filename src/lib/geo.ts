@@ -63,6 +63,10 @@ export async function reversePlace(lat: number, lng: number): Promise<Place | nu
   return toPlace((await res.json()) as NominatimResult);
 }
 
+export function formatDistance(km: number) {
+  return km < 1 ? `${Math.round(km * 1000)} m` : `${km.toFixed(1)} km`;
+}
+
 /** Great-circle distance in km. */
 export function distanceKm(a: [number, number], b: [number, number]) {
   const R = 6371;

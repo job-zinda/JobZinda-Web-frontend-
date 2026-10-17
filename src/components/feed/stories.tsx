@@ -15,9 +15,9 @@ import { errorMessage, useToast } from "@/components/ui/toast";
 
 const IMAGE_MS = 5000;
 
-/** Stories row on the home feed: "your story" + stories of people you follow. */
+/** Stories row on the home feed: "your story" + stories of people you follow. Posting stories is app-only. */
 export function StoryRow() {
-  const { user, isAuthenticated, isNormalAccount } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const mine = useQuery({ queryKey: ["story", "mine"], queryFn: storyApi.mine, enabled: isAuthenticated });
   const list = useQuery({
     queryKey: ["stories"],
@@ -29,24 +29,12 @@ export function StoryRow() {
   if (!isAuthenticated) return null;
   const myStory = mine.data && mine.data.media?.length ? mine.data : null;
   const stories = (list.data ?? []).filter((s) => s.media?.length && refId(s.user) !== user?._id);
-  if (!myStory && !stories.length && isNormalAccount) return null;
-
   const all = [...(myStory ? [{ ...myStory, userName: "Your story", userProfileImg: user?.profileImageUrl }] : []), ...stories];
+  if (!all.length) return null;
 
   return (
     <>
       <div className="no-scrollbar flex gap-4 overflow-x-auto rounded-3xl bg-surface-container-lowest px-5 py-4 shadow-sm">
-        {!myStory && !isNormalAccount && (
-          <Link href="/create?tab=story" className="flex w-16 shrink-0 flex-col items-center gap-1.5">
-            <div className="relative">
-              <Avatar src={user?.profileImageUrl} name={user?.name} size="lg" />
-              <span className="primary-gradient absolute -bottom-0.5 -right-0.5 flex h-6 w-6 items-center justify-center rounded-full text-white ring-2 ring-white">
-                <Icon name="add" className="text-base" />
-              </span>
-            </div>
-            <span className="w-full truncate text-center text-[11px] font-semibold">Add story</span>
-          </Link>
-        )}
         {all.map((s, i) => (
           <button key={s._id} onClick={() => setOpen({ stories: all, index: i })} className="flex w-16 shrink-0 flex-col items-center gap-1.5">
             <span className="story-ring rounded-full p-[2.5px]">

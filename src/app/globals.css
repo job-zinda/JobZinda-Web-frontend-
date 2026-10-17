@@ -148,3 +148,139 @@
 .animate-toast-in {
   animation: toast-in 0.2s ease-out;
 }
+
+/* Nearby map pins — mirror the mobile app's map markers (geometry lives in
+   nearby-map.tsx). Only the avatar and card take pointer events, so the
+   invisible card of a collapsed pin never blocks the map. */
+.leaflet-marker-icon.leaflet-interactive.jz-pin {
+  pointer-events: none;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+.leaflet-marker-icon.jz-pin:hover,
+.leaflet-marker-icon.jz-pin:focus-visible,
+.leaflet-marker-icon.jz-pin--active {
+  z-index: 10000 !important;
+  outline: none;
+}
+.jz-pin__avatar,
+.jz-pin__card {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.jz-pin__avatar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  border: 3px solid #7230e6;
+  border-radius: 9999px;
+  background: #e9def8;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 0.18);
+  transition: transform 0.15s ease;
+}
+.jz-pin__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.jz-pin__initials {
+  font-size: 13px;
+  font-weight: 700;
+  color: #7230e6;
+}
+.jz-pin__tip {
+  position: absolute;
+  left: 18px;
+  top: 45px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #7230e6;
+}
+.jz-pin__card {
+  position: absolute;
+  left: 34px;
+  top: -3px;
+  display: flex;
+  max-width: 150px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 4px 10px 4px 18px;
+  border: 1px solid rgb(114 48 230 / 0.12);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
+  white-space: nowrap;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.jz-pin--compact .jz-pin__card {
+  opacity: 0;
+  transform: translateX(-8px);
+  pointer-events: none;
+}
+.jz-pin:hover .jz-pin__card,
+.jz-pin:focus-visible .jz-pin__card,
+.jz-pin--active .jz-pin__card {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.jz-pin:hover .jz-pin__avatar,
+.jz-pin:focus-visible .jz-pin__avatar,
+.jz-pin--active .jz-pin__avatar {
+  transform: scale(1.08);
+}
+.jz-pin__distance {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 6px 0 4px;
+  border-radius: 8px;
+  background: #7230e6;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+}
+.jz-pin__distance .material-symbols-outlined {
+  font-size: 11px;
+}
+.jz-pin__name,
+.jz-pin__role {
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 3px;
+}
+.jz-pin__name {
+  color: #1e2022;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+}
+.jz-pin__role {
+  color: #555;
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 14px;
+}
+.jz-pin__name > span:first-child,
+.jz-pin__role > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.jz-pin__role .material-symbols-outlined {
+  font-size: 12px;
+}
+.jz-pin__verified {
+  flex-shrink: 0;
+  color: #7230e6;
+  font-size: 13px;
+}

@@ -40,7 +40,6 @@ export interface Profile {
   skills?: string[];
   experiences?: Experience[];
   profileImageUrl?: string;
-  coverImage?: string;
   followersCount?: number;
   followingCount?: number;
   projectsCount?: number;

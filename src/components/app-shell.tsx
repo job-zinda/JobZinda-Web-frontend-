@@ -11,6 +11,7 @@ import { SUPPORT } from "@/lib/format";
 import { Avatar } from "@/components/ui/avatar";
 import { Icon } from "@/components/ui/icon";
 import { ConfirmDialog } from "@/components/ui/dialog";
+import { AppBanner } from "@/components/app-promo";
 
 interface NavItem {
   label: string;
@@ -116,7 +117,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const visible = (items: NavItem[]) => items.filter((i) => !i.hidden && (!i.auth || isAuthenticated));
 
   const onCreate = () => {
-    if (!requireAuth("Log in to share posts and stories.")) return;
+    if (!requireAuth("Log in to create offers.")) return;
     router.push(isNormalAccount ? "/plans" : "/create");
   };
 
@@ -213,6 +214,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       )}
 
       <div className="flex min-h-screen flex-col md:ml-64">
+        {!fullBleed && <AppBanner />}
+
         {/* Top bar */}
         <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-primary/5 bg-white/70 px-4 backdrop-blur-xl md:px-8">
           <div className="flex items-center gap-2 md:hidden">
@@ -259,13 +262,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <main className={cn("flex-1", !fullBleed && "pb-24 md:pb-10")}>{children}</main>
 
-        {/* Community WhatsApp button (as in the Flutter home screen) */}
+        {/* WhatsApp chat button: opens a chat with Job Zinda support */}
         {!fullBleed && (
         <a
-          href={SUPPORT.whatsappGroup}
+          href={SUPPORT.whatsappHello}
           target="_blank"
           rel="noreferrer"
-          aria-label="Join our WhatsApp community"
+          aria-label="Chat with us on WhatsApp"
           className="fixed bottom-24 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition-transform hover:scale-105 md:bottom-6 md:right-6"
         >
           <svg viewBox="0 0 24 24" className="h-6 w-6 fill-current" aria-hidden>

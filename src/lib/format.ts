@@ -88,9 +88,19 @@ export const SUPPORT = {
   phone: "+919847561998",
   email: "jobzinda@gmail.com",
   whatsappDm: "https://wa.me/message/RYCPJ3DL5JQGO1",
+  whatsappHello: "https://wa.me/919847561998?text=hellojobzinda",
   whatsappGroup: "https://chat.whatsapp.com/CziCbs0nTjYHXU9kMXhMrW",
-  taskGroup: "https://chat.whatsapp.com/Kbd0WgKv5r9B2C4fpKpfyS",
+  taskGroup: "https://chat.whatsapp.com/DqZv1PMh5kE1DOwYkDwsEV?s=cl&p=a&mlu=4&ilr=4",
   faq: "https://www.joraappfreelancers.com/faq",
   privacy: "https://www.joraappfreelancers.com/privacy-policy",
   playStore: "https://play.google.com/store/apps/details?id=com.jobZinda.customers",
 };
+
+/**
+ * Play Store link tagged with where on the web it was opened, so these installs
+ * show up under "jobzinda_web" in Play Console acquisition reports. The QR code
+ * in public/images/app-qr.svg encodes the same link with medium "qr".
+ */
+export function playStoreLink(medium: "banner" | "card") {
+  return `${SUPPORT.playStore}&referrer=${encodeURIComponent(`utm_source=jobzinda_web&utm_medium=${medium}`)}`;
+}

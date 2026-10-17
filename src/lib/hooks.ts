@@ -1,8 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery, type QueryKey } from "@tanstack/react-query";
 import type { Paged } from "./types";
+
+export function useDebounced<T>(value: T, ms = 350) {
+  const [v, setV] = useState(value);
+  useEffect(() => {
+    const t = setTimeout(() => setV(value), ms);
+    return () => clearTimeout(t);
+  }, [value, ms]);
+  return v;
+}
 
 /** Infinite list over the backend's pageNumber/hasNext pagination. */
 export function usePaged<T>(

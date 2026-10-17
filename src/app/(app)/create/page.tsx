@@ -1,16 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth-context";
-import { contentApi, postApi, storyApi } from "@/lib/api/endpoints";
+import { contentApi, postApi } from "@/lib/api/endpoints";
 import { uploadFile } from "@/lib/api/client";
 import { mediaKind, videoThumbnail } from "@/lib/media";
 import { tooLarge, useFilePicker } from "@/lib/use-file-picker";
 import { Page, RequireAuth } from "@/components/app-shell";
-import { Tabs } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,31 +17,25 @@ import { Field } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
 import { errorMessage, useToast } from "@/components/ui/toast";
 
-type Tab = "post" | "story";
-
 export default function CreatePage() {
   return (
-    <RequireAuth reason="Log in to share posts and stories.">
-      <Suspense>
-        <Create />
-      </Suspense>
+    <RequireAuth reason="Log in to create offers.">
+      <Create />
     </RequireAuth>
   );
 }
 
 function Create() {
   const { isNormalAccount } = useAuth();
-  const params = useSearchParams();
-  const [tab, setTab] = useState<Tab>(params.get("tab") === "story" ? "story" : "post");
 
   if (isNormalAccount)
     return (
       <Page narrow>
         <div className="primary-gradient rounded-3xl p-8 text-center text-white shadow-lg shadow-primary/25">
           <Icon name="workspace_premium" className="text-5xl" />
-          <h1 className="mt-3 text-2xl font-extrabold">Posting is for premium members</h1>
+          <h1 className="mt-3 text-2xl font-extrabold">Creating offers is for premium members</h1>
           <p className="mx-auto mt-2 max-w-md text-sm text-white/85">
-            Upgrade to a plan to share your work, post stories and get discovered by clients.
+            Upgrade to a plan to create offers and get discovered by clients.
           </p>
           <Link href="/plans" className="mt-6 inline-block rounded-xl bg-white px-6 py-3 text-sm font-bold text-primary">
             View plans
@@ -52,17 +45,8 @@ function Create() {
     );
 
   return (
-    <Page narrow title="Create">
-      <Tabs
-        className="mb-6"
-        value={tab}
-        onChange={setTab}
-        options={[
-          { value: "post", label: "New post" },
-          { value: "story", label: "Story" },
-        ]}
-      />
-      {tab === "post" ? <PostForm /> : <StoryForm />}
+    <Page narrow title="Create offers">
+      <PostForm />
     </Page>
   );
 }
@@ -163,7 +147,7 @@ function PostForm() {
       });
     },
     onSuccess: () => {
-      toast("Post shared!", "success");
+      toast("Offer shared!", "success");
       void qc.invalidateQueries({ queryKey: ["posts"] });
       router.push("/profile");
     },
@@ -202,46 +186,7 @@ function PostForm() {
         </Field>
       </div>
       <Button type="submit" size="lg" className="w-full" loading={submit.isPending}>
-        {step || "Share post"}
-      </Button>
-    </form>
-  );
-}
-
-function StoryForm() {
-  const router = useRouter();
-  const toast = useToast();
-  const qc = useQueryClient();
-  const media = useMediaPick();
-  const [caption, setCaption] = useState("");
-  const submit = useMutation({
-    mutationFn: async () => {
-      if (!media.file || !media.kind) throw new Error("Choose a photo or video for your story.");
-      const url = await uploadFile(media.file, media.kind === "video" ? "stories/videos" : "stories/images");
-      return storyApi.create({ mediaType: media.kind, content: url }, caption.trim());
-    },
-    onSuccess: () => {
-      toast("Story posted — visible for 24 hours", "success");
-      void qc.invalidateQueries({ queryKey: ["story", "mine"] });
-      router.push("/");
-    },
-    onError: (err) => toast(errorMessage(err), "error"),
-  });
-
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        submit.mutate();
-      }}
-      className="space-y-5 rounded-3xl bg-surface-container-lowest p-6 shadow-sm"
-    >
-      <MediaPreview media={media} onPick={() => media.choose()} />
-      <Field label="Caption" htmlFor="caption" hint="Optional">
-        <Textarea id="caption" value={caption} onChange={(e) => setCaption(e.target.value)} maxLength={200} className="min-h-16" />
-      </Field>
-      <Button type="submit" size="lg" className="w-full" loading={submit.isPending} disabled={!media.file}>
-        Share to story
+        {step || "Share offer"}
       </Button>
     </form>
   );

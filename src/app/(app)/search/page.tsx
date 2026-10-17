@@ -1,26 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth-context";
 import { contentApi, userApi } from "@/lib/api/endpoints";
-import { usePaged, useInView } from "@/lib/hooks";
+import { useDebounced, usePaged, useInView } from "@/lib/hooks";
 import { Page } from "@/components/app-shell";
 import { Chips } from "@/components/ui/tabs";
 import { Icon } from "@/components/ui/icon";
 import { EmptyState, ErrorState } from "@/components/ui/empty-state";
 import { Spinner } from "@/components/ui/spinner";
 import { ProfileCard, ProfileCardSkeleton } from "@/components/profile/profile-card";
-
-function useDebounced<T>(value: T, ms = 350) {
-  const [v, setV] = useState(value);
-  useEffect(() => {
-    const t = setTimeout(() => setV(value), ms);
-    return () => clearTimeout(t);
-  }, [value, ms]);
-  return v;
-}
 
 export default function SearchPage() {
   const { isAuthenticated, isLoading } = useAuth();

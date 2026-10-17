@@ -15,6 +15,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { PostCard, PostSkeleton } from "@/components/feed/post-card";
 import { BannerCarousel, InlineBanner } from "@/components/feed/banners";
 import { StoryRow } from "@/components/feed/stories";
+import { GetAppCard } from "@/components/app-promo";
 
 const BANNER_EVERY = 5;
 
@@ -122,6 +123,7 @@ export default function HomePage() {
       <aside className="sticky top-24 hidden h-fit w-80 shrink-0 space-y-5 xl:block">
         <QuickLinks />
         <SuggestedPeople />
+        <GetAppCard />
       </aside>
     </div>
   );
