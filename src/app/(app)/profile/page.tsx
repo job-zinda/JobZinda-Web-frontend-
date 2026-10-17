@@ -26,23 +26,22 @@ function MyProfile() {
   const { user, isNormalAccount, refreshProfile } = useAuth();
   const toast = useToast();
   const pick = useFilePicker();
-  const [uploading, setUploading] = useState<"avatar" | "cover" | null>(null);
+  const [uploading, setUploading] = useState(false);
 
-  const changeImage = useMutation({
-    mutationFn: async (kind: "avatar" | "cover") => {
+  const changeAvatar = useMutation({
+    mutationFn: async () => {
       const file = await pick("image/*");
       if (!file) return false;
       if (tooLarge(file, 10)) throw new Error("Please choose an image under 10 MB.");
-      setUploading(kind);
+      setUploading(true);
       const url = await uploadFile(file, "media");
-      if (kind === "avatar") await userApi.updateImage(url);
-      else await userApi.updateCover(url);
+      await userApi.updateImage(url);
       await refreshProfile();
       return true;
     },
     onSuccess: (changed) => changed && toast("Profile updated", "success"),
     onError: (err) => toast(errorMessage(err), "error"),
-    onSettled: () => setUploading(null),
+    onSettled: () => setUploading(false),
   });
 
   if (!user) return null;
@@ -58,8 +57,7 @@ function MyProfile() {
         <div className="min-w-0 space-y-6">
           <ProfileHeader
             profile={user}
-            onEditAvatar={() => changeImage.mutate("avatar")}
-            onEditCover={() => changeImage.mutate("cover")}
+            onEditAvatar={() => changeAvatar.mutate()}
             stats={<ProfileStats profile={user} followersHref="/profile/connections" feedbackHref={`/profile/${user._id}/feedback`} />}
             actions={
               <>
@@ -77,7 +75,7 @@ function MyProfile() {
           {uploading && (
             <p className="flex items-center gap-2 text-sm font-semibold text-primary">
               <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-              Uploading {uploading === "avatar" ? "profile photo" : "cover image"}…
+              Uploading profile photo…
             </p>
           )}
 

@@ -18,36 +18,19 @@ export function ProfileHeader({
   profile,
   actions,
   onEditAvatar,
-  onEditCover,
   stats,
 }: {
   profile: Profile;
   actions?: ReactNode;
   onEditAvatar?: () => void;
-  onEditCover?: () => void;
   stats?: ReactNode;
 }) {
   return (
-    <section className="overflow-hidden rounded-3xl bg-surface-container-lowest shadow-sm">
-      <div className="relative h-40 md:h-56">
-        {profile.coverImage ? (
-          <img src={profile.coverImage} alt="" className="h-full w-full object-cover" />
-        ) : (
-          <div className="primary-gradient h-full w-full opacity-90" />
-        )}
-        {onEditCover && (
-          <button
-            onClick={onEditCover}
-            className="absolute right-4 top-4 flex items-center gap-1.5 rounded-xl bg-black/40 px-3 py-1.5 text-xs font-bold text-white backdrop-blur hover:bg-black/55"
-          >
-            <Icon name="photo_camera" className="text-base" /> Edit cover
-          </button>
-        )}
-      </div>
-      <div className="px-5 pb-6 md:px-8">
-        <div className="-mt-14 flex flex-wrap items-end justify-between gap-4">
+    <section className="rounded-3xl bg-surface-container-lowest shadow-sm">
+      <div className="px-5 py-6 md:px-8">
+        <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="relative">
-            <Avatar src={profile.profileImageUrl} name={profile.name} size="xl" className="ring-4 ring-surface-container-lowest" />
+            <Avatar src={profile.profileImageUrl} name={profile.name} size="xl" className="ring-4 ring-secondary-container" />
             {onEditAvatar && (
               <button
                 onClick={onEditAvatar}
@@ -242,10 +225,9 @@ export function PostGrid({
 
 export function ProfileSkeleton() {
   return (
-    <div className="overflow-hidden rounded-3xl bg-surface-container-lowest">
-      <div className="h-40 animate-pulse bg-surface-container-high md:h-56" />
+    <div className="rounded-3xl bg-surface-container-lowest">
       <div className="space-y-3 p-6">
-        <div className="-mt-16 h-28 w-28 animate-pulse rounded-full bg-surface-container-highest ring-4 ring-white" />
+        <div className="h-28 w-28 animate-pulse rounded-full bg-surface-container-highest" />
         <div className="h-5 w-48 animate-pulse rounded bg-surface-container-high" />
         <div className="h-4 w-32 animate-pulse rounded bg-surface-container-high" />
       </div>

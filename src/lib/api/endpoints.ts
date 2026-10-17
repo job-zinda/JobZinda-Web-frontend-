@@ -107,8 +107,6 @@ export const userApi = {
     api<{ profileDetails: Profile }>("user/update-profile", { method: "PUT", body }).then((d) => d.profileDetails),
   updateImage: (profileImageUrl: string) =>
     api<{ profileDetails: Profile }>("user/update-profile-image", { method: "PUT", body: { profileImageUrl } }),
-  updateCover: (coverImage: string) =>
-    api<{ profileDetails: Profile }>("user/update-cover-image", { method: "PUT", body: { coverImage } }),
   deleteAccount: () => api("user/delete-profile", { method: "PATCH" }),
   search: (params: PageParams & { searchTag?: string; professionId?: string }, guest: boolean) =>
     api<Data>(guest ? "user/public-profiles" : "user/get-other-profiles", {
@@ -196,12 +194,6 @@ export const storyApi = {
   list: (params: PageParams) =>
     api<Data>("story/listStories", { query: { pageSize: 20, ...params } }).then((d) => paged<Story>(d, "stories")),
   mine: () => api<{ story: Story | null }>("story/getMyStory").then((d) => d.story),
-  create: (media: { mediaType: "image" | "video"; content: string; duration?: number }, description = "") =>
-    api("story/createStory", {
-      method: "POST",
-      // Backend (story-service.create) expects a single media object, not an array.
-      body: { notificationType: "other", media: { duration: 0, ...media }, description, caption: "" },
-    }),
   markViewed: (storyId: string, lastViewedMediaId: string) =>
     api("story/updateStoryView", { method: "POST", body: { storyId, lastViewedMediaId } }),
   removeMedia: (storyId: string, mediaId: string) =>

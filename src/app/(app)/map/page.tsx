@@ -1,12 +1,14 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth-context";
 import { contentApi, userApi } from "@/lib/api/endpoints";
-import { getPosition } from "@/lib/hooks";
-import { coordsOf, distanceKm } from "@/lib/geo";
+import { getPosition, useDebounced } from "@/lib/hooks";
+import { coordsOf, distanceKm, formatDistance, type Place } from "@/lib/geo";
+import type { Profile } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icon";
 import { Select } from "@/components/ui/select";
 import { Dialog } from "@/components/ui/dialog";
@@ -29,36 +31,56 @@ interface Filters {
   professionId: string;
 }
 
+const DISTANCES = [10, 20, 30];
 const DEFAULT_FILTERS: Filters = { distanceInKm: 10, gender: "", rating: "", projects: "", professionId: "" };
 const PROJECT_RANGES: Record<string, [number, number]> = { "1-5": [1, 5], "6-20": [6, 20], "21+": [21, 1000] };
+const LOCAL_MAX_KM = 200;
 
 export default function MapPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const [center, setCenter] = useState<[number, number] | null>(null);
   const [locLabel, setLocLabel] = useState("");
+  const [query, setQuery] = useState("");
+  const searchTag = useDebounced(query.trim(), 400);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [draft, setDraft] = useState<Filters>(DEFAULT_FILTERS);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [locationOpen, setLocationOpen] = useState(false);
+  const [listOpen, setListOpen] = useState(false);
   const [active, setActive] = useState<string | null>(null);
   const categories = useQuery({ queryKey: ["categories"], queryFn: contentApi.categories, staleTime: 600_000 });
 
-  useEffect(() => {
-    void getPosition().then((p) => {
-      setCenter([p.lat, p.lng]);
-      setLocLabel(p.fallback ? "India" : "Your location");
-      if (p.fallback) setFilters((f) => ({ ...f, distanceInKm: 1500 }));
-    });
+  const applyPosition = useCallback((p: Awaited<ReturnType<typeof getPosition>>) => {
+    setCenter([p.lat, p.lng]);
+    setLocLabel(p.fallback ? "India" : "Your location");
+    // Without a real position we centre on India, so search the whole country.
+    setFilters((f) => ({
+      ...f,
+      distanceInKm: p.fallback ? 1500 : f.distanceInKm > LOCAL_MAX_KM ? DEFAULT_FILTERS.distanceInKm : f.distanceInKm,
+    }));
   }, []);
+
+  useEffect(() => {
+    void getPosition().then(applyPosition);
+  }, [applyPosition]);
+
+  const pickPlace = (p: Place) => {
+    setCenter([p.lat, p.lng]);
+    setLocLabel(p.label.split(",")[0]);
+    if (filters.distanceInKm > LOCAL_MAX_KM) setFilters((f) => ({ ...f, distanceInKm: DEFAULT_FILTERS.distanceInKm }));
+    setLocationOpen(false);
+  };
 
   const range = PROJECT_RANGES[filters.projects];
   const nearby = useQuery({
-    queryKey: ["nearby", isAuthenticated, center, filters],
+    queryKey: ["nearby", isAuthenticated, center, filters, searchTag],
     queryFn: () =>
       userApi.nearby(
         {
           lat: center![0],
           lng: center![1],
           distanceInKm: filters.distanceInKm,
+          searchTag: searchTag || undefined,
           gender: filters.gender || undefined,
           rating: filters.rating ? Number(filters.rating) : undefined,
           handledProjectsCountFrom: range?.[0],
@@ -68,71 +90,108 @@ export default function MapPage() {
         !isAuthenticated,
       ),
     enabled: !!center && !isLoading,
+    placeholderData: keepPreviousData,
   });
 
   const profiles = useMemo(() => nearby.data?.items ?? [], [nearby.data]);
+  const searching = nearby.isLoading || !center;
+  const countLabel = searching
+    ? "Searching…"
+    : `${profiles.length} freelancer${profiles.length === 1 ? "" : "s"} available`;
   const activeFilters =
-    Number(filters.distanceInKm !== DEFAULT_FILTERS.distanceInKm) + Number(!!filters.gender) + Number(!!filters.rating) + Number(!!filters.projects) + Number(!!filters.professionId);
+    Number(!DISTANCES.includes(filters.distanceInKm)) + Number(!!filters.gender) + Number(!!filters.rating) + Number(!!filters.projects) + Number(!!filters.professionId);
 
-  const distanceLabel = (id: string) => {
-    const p = profiles.find((x) => x._id === id);
-    const pos = p && coordsOf(p);
-    if (!pos || !center) return undefined;
-    const d = distanceKm(center, pos);
-    return d < 1 ? `${Math.round(d * 1000)} m` : `${d.toFixed(1)} km`;
+  const distanceOf = (p: Profile) => {
+    const pos = coordsOf(p);
+    return pos && center ? formatDistance(distanceKm(center, pos)) : undefined;
   };
 
   return (
-    <div className="relative flex h-[calc(100dvh-4rem-4.5rem)] flex-col md:h-[calc(100dvh-4rem)] lg:flex-row">
-      <div className="relative min-h-[45%] flex-1">
-        {center ? (
-          <NearbyMap
-            center={center}
-            radiusKm={Math.min(filters.distanceInKm, 200)}
-            profiles={profiles}
-            activeId={active}
-            onSelect={(id) => {
-              setActive(id);
-              document.getElementById(`nearby-${id}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-            }}
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center bg-surface-container text-sm text-on-surface-variant">
-            Finding your location…
+    // `isolate` keeps Leaflet's pane z-indexes (400+) below dialogs and the app shell.
+    <div className="relative isolate h-[calc(100dvh-4rem-4.5rem)] overflow-hidden md:h-[calc(100dvh-4rem)]">
+      {center ? (
+        <NearbyMap center={center} radiusKm={Math.min(filters.distanceInKm, LOCAL_MAX_KM)} profiles={profiles} activeId={active} />
+      ) : (
+        <div className="flex h-full items-center justify-center bg-surface-container text-sm text-on-surface-variant">
+          Finding your location…
+        </div>
+      )}
+
+      {/* Header + distance selector, as in the mobile app */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[500]">
+        <div className="pointer-events-auto rounded-b-[22px] bg-gradient-to-b from-primary to-primary-dim pb-3.5 pt-3 shadow-[0_4px_10px_rgba(114,48,230,0.2)]">
+          <div className="mx-auto flex max-w-3xl gap-2.5 px-3.5">
+            <label className="flex h-12 min-w-0 flex-1 items-center gap-2 rounded-full bg-surface-container-lowest pl-3 pr-3.5 shadow-[0_2px_6px_rgba(0,0,0,0.08)]">
+              <Icon name="person" filled className="text-2xl text-primary" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search people, skills, profession…"
+                aria-label="Search people, skills, profession"
+                enterKeyHint="search"
+                className="min-w-0 flex-1 bg-transparent text-sm font-medium text-on-surface outline-none placeholder:font-normal placeholder:text-on-surface-variant/70"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="Clear search"
+                  className="rounded-full p-0.5 text-on-surface-variant hover:bg-surface-container"
+                >
+                  <Icon name="close" className="text-lg" />
+                </button>
+              )}
+              <Icon name="search" className="text-[22px] text-on-surface-variant" />
+            </label>
+            <button
+              onClick={() => setLocationOpen(true)}
+              aria-label="Change location"
+              title={locLabel || "Change location"}
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-surface-container-lowest shadow-[0_2px_6px_rgba(0,0,0,0.08)] transition-transform active:scale-95"
+            >
+              <Icon name="location_on" filled className="text-[26px] text-[#e53935]" />
+            </button>
           </div>
-        )}
-        <div className="absolute inset-x-4 top-4 z-[500] flex gap-2">
-          <PlaceSearch
-            className="flex-1"
-            onPick={(p) => {
-              setCenter([p.lat, p.lng]);
-              setLocLabel(p.label.split(",")[0]);
-              if (filters.distanceInKm > 200) setFilters((f) => ({ ...f, distanceInKm: 25 }));
-            }}
-          />
-          <button
-            onClick={() =>
-              void getPosition().then((p) => {
-                setCenter([p.lat, p.lng]);
-                setLocLabel(p.fallback ? "India" : "Your location");
-              })
-            }
-            aria-label="Use my location"
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-surface-container-lowest text-primary shadow-sm ring-1 ring-outline-variant/30"
+        </div>
+
+        <div className="mx-auto mt-2.5 flex max-w-3xl gap-2 px-3.5">
+          <div
+            role="group"
+            aria-label="Distance"
+            className="pointer-events-auto flex h-[38px] flex-1 rounded-full bg-surface-container-lowest p-0.5 shadow-[0_2px_6px_rgba(0,0,0,0.08)] ring-1 ring-black/5"
           >
-            <Icon name="my_location" />
-          </button>
+            {DISTANCES.map((d, i) => {
+              const on = filters.distanceInKm === d;
+              const divider = i > 0 && !on && filters.distanceInKm !== DISTANCES[i - 1];
+              return (
+                <button
+                  key={d}
+                  onClick={() => setFilters((f) => ({ ...f, distanceInKm: d }))}
+                  aria-pressed={on}
+                  className={cn(
+                    "relative flex-1 rounded-full text-[13px] transition-colors",
+                    on
+                      ? "bg-primary font-bold text-white shadow-[0_2px_6px_rgba(114,48,230,0.35)]"
+                      : "font-medium text-on-surface-variant hover:text-primary",
+                    divider && "before:absolute before:inset-y-2 before:left-0 before:w-px before:bg-outline-variant/50",
+                  )}
+                >
+                  {d}Km
+                </button>
+              );
+            })}
+          </div>
           <button
             onClick={() => {
               setDraft(filters);
               setFilterOpen(true);
             }}
             aria-label="Filters"
-            className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-surface-container-lowest text-primary shadow-sm ring-1 ring-outline-variant/30"
+            className="pointer-events-auto relative flex h-[38px] w-11 shrink-0 items-center justify-center rounded-[14px] bg-surface-container-lowest text-primary shadow-[0_2px_4px_rgba(0,0,0,0.06)] ring-1 ring-black/5"
           >
-            <Icon name="tune" />
+            <Icon name="tune" className="text-xl" />
             {activeFilters > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
+              <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
                 {activeFilters}
               </span>
             )}
@@ -140,34 +199,70 @@ export default function MapPage() {
         </div>
       </div>
 
-      <aside className="custom-scrollbar flex max-h-[55%] flex-col overflow-y-auto rounded-t-3xl bg-background px-4 pb-6 pt-5 shadow-[0_-8px_24px_-12px_rgba(52,49,58,0.2)] lg:max-h-none lg:w-[400px] lg:rounded-none lg:shadow-none">
-        <div className="mb-4">
-          <h1 className="text-xl font-extrabold">
-            {nearby.isLoading ? "Searching…" : `${profiles.length} freelancer${profiles.length === 1 ? "" : "s"} available`}
-          </h1>
-          <p className="text-sm text-on-surface-variant">
-            Within {filters.distanceInKm} km of {locLabel || "you"}
-          </p>
-        </div>
-        <div className="space-y-3">
-          {nearby.isLoading || !center ? (
-            Array.from({ length: 4 }, (_, i) => <ProfileCardSkeleton key={i} />)
-          ) : profiles.length === 0 ? (
-            <EmptyState icon="location_off" title="No one nearby yet" description="Increase the distance or search another area." />
+      {!listOpen && (
+        <button
+          onClick={() => setListOpen(true)}
+          className="absolute bottom-6 left-1/2 z-[500] flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-surface-container-lowest py-2.5 pl-4 pr-3 text-sm font-bold text-on-surface shadow-[0_8px_24px_-6px_rgba(52,49,58,0.35)] ring-1 ring-black/5 transition-colors hover:text-primary"
+        >
+          {nearby.isFetching ? (
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           ) : (
-            profiles.map((p) => (
-              <div
-                key={p._id}
-                id={`nearby-${p._id}`}
-                onMouseEnter={() => setActive(p._id)}
-                className={active === p._id ? "rounded-2xl ring-2 ring-primary" : undefined}
-              >
-                <ProfileCard profile={p} distance={distanceLabel(p._id)} />
-              </div>
-            ))
+            <Icon name="format_list_bulleted" className="text-lg text-primary" />
           )}
+          {countLabel}
+          <Icon name="expand_less" className="text-lg text-on-surface-variant" />
+        </button>
+      )}
+
+      {listOpen && (
+        <aside className="absolute inset-x-0 bottom-0 z-[600] flex max-h-[70%] flex-col rounded-t-3xl bg-background shadow-[0_-8px_24px_-12px_rgba(52,49,58,0.3)] lg:inset-x-auto lg:bottom-4 lg:right-4 lg:top-36 lg:max-h-none lg:w-[380px] lg:rounded-3xl lg:shadow-xl">
+          <div className="flex items-start gap-3 px-5 pb-3 pt-5">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-on-surface-variant">Showing total results</p>
+              <h2 className="text-lg font-extrabold">{countLabel}</h2>
+              <p className="truncate text-xs text-on-surface-variant">
+                Within {filters.distanceInKm} km of {locLabel || "you"}
+              </p>
+            </div>
+            <button
+              onClick={() => setListOpen(false)}
+              aria-label="Close list"
+              className="rounded-full p-1.5 text-on-surface-variant hover:bg-surface-container"
+            >
+              <Icon name="close" />
+            </button>
+          </div>
+          <div className="custom-scrollbar flex-1 space-y-3 overflow-y-auto px-4 pb-5">
+            {searching ? (
+              Array.from({ length: 4 }, (_, i) => <ProfileCardSkeleton key={i} />)
+            ) : profiles.length === 0 ? (
+              <EmptyState icon="location_off" title="No one nearby yet" description="Increase the distance or search another area." />
+            ) : (
+              profiles.map((p) => (
+                <div key={p._id} onMouseEnter={() => setActive(p._id)} onMouseLeave={() => setActive(null)}>
+                  <ProfileCard profile={p} distance={distanceOf(p)} />
+                </div>
+              ))
+            )}
+          </div>
+        </aside>
+      )}
+
+      <Dialog open={locationOpen} onClose={() => setLocationOpen(false)} title="Choose location">
+        <div className="min-h-[25rem] space-y-2 p-6">
+          <PlaceSearch onPick={pickPlace} />
+          <button
+            onClick={() => {
+              void getPosition().then(applyPosition);
+              setLocationOpen(false);
+            }}
+            className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-semibold text-primary hover:bg-primary/5"
+          >
+            <Icon name="my_location" />
+            Use my current location
+          </button>
         </div>
-      </aside>
+      </Dialog>
 
       <Dialog open={filterOpen} onClose={() => setFilterOpen(false)} title="Filter freelancers">
         <div className="space-y-5 p-6">
@@ -240,4 +335,3 @@ export default function MapPage() {
     </div>
   );
 }
-
